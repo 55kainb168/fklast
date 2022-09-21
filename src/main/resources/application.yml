@@ -1,0 +1,17 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/fklast?serverTimezone=UTC
+      username: "root"
+      password: "root"
+  redis:
+    host: localhost
+    port: 6379
+#    password: "1236987415q"
+
+
+
+
