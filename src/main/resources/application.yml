@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8083
 spring:
   datasource:
     druid:
@@ -7,11 +7,38 @@ spring:
       url: jdbc:mysql://localhost:3306/fklast?serverTimezone=UTC
       username: "root"
       password: "root"
+  profiles:
+    active: dev
+  mail:
+    username: 215368433@qq.com
+    password: ygfkeuigszrbbgff
+    default-encoding: UTF-8
+    host: smtp.qq.com
+  servlet:
+    multipart:
+      #      单个文件大小
+      max-file-size: 1500MB
+      #      总上传文件大小
+      max-request-size: 3000MB
+      #      文件达到多少时进行磁盘写入
+      file-size-threshold: 4000MB
   redis:
     host: localhost
     port: 6379
 #    password: "1236987415q"
 
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: fk_
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
 
-
+#公私钥配置
+rsa:
+  key:
+    pubKeyFile: E:\\fuckingkeys\\id_key_rsa.pub
+    priKeyFile: E:\\fuckingkeys\\id_key_rsa
 

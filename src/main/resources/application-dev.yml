@@ -1,0 +1,5 @@
+#本机配置
+file:
+  staticPath: "http://localhost:8082/uploadImages/"
+  patternPath: "/uploadImages/**"
+  uploadFolder: resource/
