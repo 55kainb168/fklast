@@ -1,15 +1,10 @@
 package com.example.fklast.config;
 
-import com.example.fklast.utils.RefreshTokenInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.annotation.Resource;
 
 /**
  * @author 卢本伟牛逼
@@ -23,8 +18,6 @@ public class WebMvcConfig implements WebMvcConfigurer
 
     @Value("${file.patternPath}")
     private String patternPath;
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public void addResourceHandlers ( ResourceHandlerRegistry registry )
@@ -50,15 +43,4 @@ public class WebMvcConfig implements WebMvcConfigurer
                 .exposedHeaders("*");
     }
 
-    @Override
-    public void addInterceptors ( InterceptorRegistry registry )
-    {
-        registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate)).order(0);
-    }
 }
-
-//order决定谁先执行
-//        registry.addInterceptor(new LoginInterceptor())
-//                .excludePathPatterns(
-//                        "/upload/**"
-//                ).order(1);

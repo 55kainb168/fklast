@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .usernameParameter("email")
                 .and()
                 .addFilter(new JwtLoginFilter(super.authenticationManager(),rsa,stringRedisTemplate, userService))
-                .addFilter(new VerifyFilter(super.authenticationManager(), rsa,stringRedisTemplate, userService))
+                .addFilter(new VerifyFilter(super.authenticationManager(), rsa,stringRedisTemplate))
                 .authorizeRequests()
                 .antMatchers("/user/login").permitAll()
                 .anyRequest()

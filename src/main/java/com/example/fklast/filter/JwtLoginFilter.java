@@ -87,8 +87,6 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
                 ow.write(new ObjectMapper().writeValueAsString(resultMap));
                 ow.flush();
                 ow.close();
-
-
             }
             catch ( Exception ex )
             {

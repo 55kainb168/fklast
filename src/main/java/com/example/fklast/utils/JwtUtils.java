@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 public class JwtUtils {
 
-    private static final String JWT_PAYLOAD_USER_KEY = "user";
+    private static final String JWT_PAYLOAD_USER_KEY = "fucking shit";
 
     /**
      * 私钥加密token

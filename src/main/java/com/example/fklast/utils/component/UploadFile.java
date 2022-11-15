@@ -49,7 +49,7 @@ public class UploadFile
         String originalFilename = multipartFile.getOriginalFilename();
         //图片文件名后缀
         assert originalFilename != null;
-        String imgSuffix = originalFilename.substring(originalFilename.indexOf("."));
+        String imgSuffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         //生成的唯一文件名：使用UUID统一命名
         String newFileName = UUID.randomUUID().toString(true) + imgSuffix;
         //使用用户id生成目录 ，ID目录

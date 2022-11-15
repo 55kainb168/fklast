@@ -1,5 +1,6 @@
 package com.example.fklast.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.example.fklast.dto.UserDTO;
 import com.example.fklast.utils.Result;
 import com.example.fklast.utils.component.UploadFile;
@@ -28,7 +29,7 @@ public class UploadFileController
     public Result uploadFile ( @RequestBody (required = false) MultipartFile multipartFile, @RequestParam String dir ) throws IOException
     {
         UserDTO userDTO = UserHolder.getUser();
-        if ( multipartFile.isEmpty() )
+        if ( ObjectUtil.isEmpty(multipartFile) )
         {
             return new Result(false, "文件为空");
         }

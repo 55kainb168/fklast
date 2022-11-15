@@ -1,10 +1,13 @@
 package com.example.fklast.filter;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.example.fklast.config.RsaKeyConfig;
 import com.example.fklast.domain.Payload;
 import com.example.fklast.domain.User;
-import com.example.fklast.service.UserService;
+import com.example.fklast.dto.UserDTO;
 import com.example.fklast.utils.JwtUtils;
+import com.example.fklast.utils.RedisConstants;
+import com.example.fklast.utils.UserHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 卢本伟牛逼
@@ -27,18 +31,15 @@ import java.util.Map;
 public class VerifyFilter extends BasicAuthenticationFilter
 {
 
-    private RsaKeyConfig rsa;
+    private final RsaKeyConfig rsa;
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    private final UserService userService;
-
-    public VerifyFilter ( AuthenticationManager authenticationManager, RsaKeyConfig rsa, StringRedisTemplate stringRedisTemplate, UserService userService )
+    public VerifyFilter ( AuthenticationManager authenticationManager, RsaKeyConfig rsa, StringRedisTemplate stringRedisTemplate )
     {
         super(authenticationManager);
         this.rsa = rsa;
         this.stringRedisTemplate = stringRedisTemplate;
-        this.userService = userService;
     }
 
 
@@ -78,33 +79,18 @@ public class VerifyFilter extends BasicAuthenticationFilter
             {
                 UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authResult);
+                //追，刷新token时间
+                String key = RedisConstants.LOGIN_USER_KEY + token;
+                Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(key);
+                //将查询到的Hash数据转换为userDTO对象
+                UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), true);
+                //刷新token有效期
+                stringRedisTemplate.expire(key, RedisConstants.LOGIN_USER_TTL, TimeUnit.MINUTES);
+                //保存，放行
+                UserHolder.saveUser(userDTO);
                 chain.doFilter(request, response);
             }
         }
     }
 }
 
-
-
-//        String key = RedisConstants.LOGIN_USER_KEY + token;
-//        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(key);
-//        Long expire = stringRedisTemplate.opsForHash().getOperations().getExpire(key);
-//        assert expire != null;
-//        if ( expire < 0 && StrUtil.isNotBlank(token))
-//        {
-//            //token过期
-//            response.setStatus(666);
-//            chain.doFilter(request, response);
-//        }
-//        if ( CollUtil.isNotEmpty(userMap) )
-//        {
-//            //将查询到的Hash数据转换为userDTO对象
-//            UserDetails user = userService.loadUserByUsername(String.valueOf(userMap.get("username")));
-//            UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
-//            SecurityContextHolder.getContext().setAuthentication(authResult);
-//            chain.doFilter(request, response);
-//        }
-//        else
-//        {
-//            chain.doFilter(request, response);
-//        }
