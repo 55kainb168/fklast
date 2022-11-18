@@ -1,4 +1,4 @@
-package com.example.fklast.controller;
+package com.example.fklast.controller.uitlController;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.example.fklast.dto.UserDTO;

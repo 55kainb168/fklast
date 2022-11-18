@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -49,22 +50,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * 解决自定义过滤器过滤问题
+     */
+    @Override
+    public void configure ( WebSecurity web )
+    {
+        web.ignoring().antMatchers("/user/register","/mail");
+    }
+
     @Override
     public void configure ( HttpSecurity http ) throws Exception
     {
 //        释放静态资源,指定资源拦截规则,指定自定义认证界面,指定退出认证配置,csrf配置
-        http.csrf().disable()
+        http.authorizeRequests()
+                .antMatchers("/user/register","/mail").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
                 .formLogin()
                 .usernameParameter("email")
                 .and()
                 .addFilter(new JwtLoginFilter(super.authenticationManager(),rsa,stringRedisTemplate, userService))
                 .addFilter(new VerifyFilter(super.authenticationManager(), rsa,stringRedisTemplate))
-                .authorizeRequests()
-                .antMatchers("/user/login").permitAll()
-                .anyRequest()
-                .authenticated()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+                .csrf()
+                .disable();
+//                .csrf()
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .ignoringAntMatchers("/user/register","/mail");
     }
 }

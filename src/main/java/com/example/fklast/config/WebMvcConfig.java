@@ -32,15 +32,15 @@ public class WebMvcConfig implements WebMvcConfigurer
         registry.addMapping("/**")
                 //是否发送Cookie
                 .allowCredentials(true)
-                //设置放行哪些原始域   SpringBoot2.4.4下低版本使用.allowedOrigins("*")
-                .allowedOriginPatterns("*")
-                //放行哪些请求方式
-                .allowedMethods("OPTIONS", "POST", "PUT", "DELETE", "GET")
+            //设置放行哪些原始域   SpringBoot2.4.4下低版本使用.allowedOrigins("*")
+            .allowedOriginPatterns("*")
+            //放行哪些请求方式
+            .allowedMethods("OPTIONS", "POST", "PUT", "DELETE", "GET")
 //                .allowedMethods("*") //或者放行全部
-                //放行哪些原始请求头部信息
-                .allowedHeaders("*")
-                //暴露哪些原始请求头部信息
-                .exposedHeaders("*");
+            //放行哪些原始请求头部信息
+            .allowedHeaders("*")
+            //暴露哪些原始请求头部信息
+            .exposedHeaders("*");
     }
 
 }

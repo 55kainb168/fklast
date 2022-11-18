@@ -17,10 +17,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -44,11 +46,6 @@ public class VerifyFilter extends BasicAuthenticationFilter
 
 
     /**
-     * @param request
-     * @param response
-     * @param chain
-     * @throws IOException
-     * @throws ServletException
      *     判断请求头是否满足格式，以及判断token和解析token
      */
     @Override
@@ -61,13 +58,14 @@ public class VerifyFilter extends BasicAuthenticationFilter
             chain.doFilter(request,response);
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            PrintWriter out = response.getWriter();
             Map<String, Object> resultMap = new HashMap<>(16);
             resultMap.put("code", HttpServletResponse.SC_FORBIDDEN);
             resultMap.put("msg", "请登录！");
-            out.write(new ObjectMapper().writeValueAsString(resultMap));
-            out.flush();
-            out.close();
+            ServletOutputStream out = response.getOutputStream();
+            OutputStreamWriter ow = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+            ow.write(new ObjectMapper().writeValueAsString(resultMap));
+            ow.flush();
+            ow.close();
         }
         else
         {

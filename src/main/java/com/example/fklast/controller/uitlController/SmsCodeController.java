@@ -1,4 +1,4 @@
-package com.example.fklast.controller;
+package com.example.fklast.controller.uitlController;
 
 import com.example.fklast.domain.SmsCode;
 import com.example.fklast.service.SmsCodeService;

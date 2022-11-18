@@ -26,6 +26,13 @@ spring:
     host: localhost
     port: 6379
 #    password: "1236987415q"
+  cache:
+    type: redis
+    redis:
+      time-to-live: 5m
+      #      是否开启前缀
+      use-key-prefix: true
+      key-prefix: sms_
 
 mybatis-plus:
   global-config:
@@ -42,3 +49,10 @@ rsa:
     pubKeyFile: E:\\fuckingkeys\\id_key_rsa.pub
     priKeyFile: E:\\fuckingkeys\\id_key_rsa
 
+
+
+fromMail:
+  sender: 215368433@qq.com
+logging:
+  level:
+    root: warn
