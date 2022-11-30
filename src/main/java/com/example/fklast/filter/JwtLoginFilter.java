@@ -106,7 +106,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
         user.setUsername(authResult.getName());
         user.setRoles((List<Role>) authResult.getAuthorities());
         //一天的时间
-        String token = JwtUtils.generateTokenExpireInMinutes(user, rsaKeyConfig.getPrivateKey(), 30);
+        String token = JwtUtils.generateTokenExpireInMinutes(user, rsaKeyConfig.getPrivateKey());
         //将token写入redis缓存，需要查询一次数据库
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUsername,user.getUsername());

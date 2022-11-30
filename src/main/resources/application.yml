@@ -1,6 +1,9 @@
 server:
   port: 8083
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost/fklast
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver

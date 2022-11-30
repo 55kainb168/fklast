@@ -5,7 +5,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.joda.time.DateTime;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -26,14 +25,15 @@ public class JwtUtils {
      *
      * @param userInfo   载荷中的数据
      * @param privateKey 私钥
-     * @param expire     过期时间，单位分钟
+     *                   //     * @param expire     过期时间，单位分钟
      * @return JWT
      */
-    public static String generateTokenExpireInMinutes(Object userInfo, PrivateKey privateKey, int expire) {
+    public static String generateTokenExpireInMinutes ( Object userInfo, PrivateKey privateKey )
+    {
         return Jwts.builder()
                 .claim(JWT_PAYLOAD_USER_KEY, JsonUtils.toString(userInfo))
                 .setId(createJTI())
-                .setExpiration(DateTime.now().plusMinutes(expire).toDate())
+//                .setExpiration(DateTime.now().plusMinutes(expire).toDate())
                 .signWith(privateKey, SignatureAlgorithm.RS256)
                 .compact();
     }
@@ -43,14 +43,15 @@ public class JwtUtils {
      *
      * @param userInfo   载荷中的数据
      * @param privateKey 私钥
-     * @param expire     过期时间，单位秒
+     *                   //     * @param expire     过期时间，单位秒
      * @return JWT
      */
-    public static String generateTokenExpireInSeconds(Object userInfo, PrivateKey privateKey, int expire) {
+    public static String generateTokenExpireInSeconds ( Object userInfo, PrivateKey privateKey )
+    {
         return Jwts.builder()
                 .claim(JWT_PAYLOAD_USER_KEY, JsonUtils.toString(userInfo))
                 .setId(createJTI())
-                .setExpiration(DateTime.now().plusSeconds(expire).toDate())
+//                .setExpiration(DateTime.now().plusSeconds(expire).toDate())
                 .signWith(privateKey, SignatureAlgorithm.RS256)
                 .compact();
     }
@@ -83,7 +84,7 @@ public class JwtUtils {
         Payload<T> claims = new Payload<>();
         claims.setId(body.getId());
         claims.setUserInfo(JsonUtils.toBean(body.get(JWT_PAYLOAD_USER_KEY).toString(), userType));
-        claims.setExpiration(body.getExpiration());
+//        claims.setExpiration(DateTime.now().plusMinutes(expire.intValue()).toDate());
         return claims;
     }
 

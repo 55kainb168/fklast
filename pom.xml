@@ -64,6 +64,20 @@
         </dependency>
 
 
+        <!--视频处理-->
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/ffmpeg-platform -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>ffmpeg-platform</artifactId>
+            <version>5.1.2-1.5.8</version>
+        </dependency>
+
 
         <dependency>
             <groupId>joda-time</groupId>
@@ -74,6 +88,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
 

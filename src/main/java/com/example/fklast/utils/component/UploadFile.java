@@ -4,14 +4,19 @@ import cn.hutool.core.lang.UUID;
 import com.example.fklast.dto.UserDTO;
 import com.example.fklast.mapper.UserMapper;
 import com.example.fklast.mapper.VideoMapper;
+import com.example.fklast.utils.UserHolder;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +48,7 @@ public class UploadFile
      * 回滚防止暴毙
      */
     @Transactional (rollbackFor = Exception.class)
-    public Map<String, Object> uploadFile ( MultipartFile multipartFile, String dir, UserDTO userDTO ) throws IOException
+    public Map<String, Object> uploadFile ( MultipartFile multipartFile, String dir, UserDTO userDTO ) throws Exception
     {
         //获取上传的文件或图片
         String originalFilename = multipartFile.getOriginalFilename();
@@ -67,9 +72,18 @@ public class UploadFile
         File targetFileName = new File(targetPath, newFileName);
         //上传文件
         multipartFile.transferTo(targetFileName);
+
+        Map<String, Object> map = new HashMap<>();
+
+        //如果上传的文件是视频则截取一下封面
+        if ( dir.equals("vUrl") )
+        {
+            String coverUrl = getPicFromVideo(targetFileName, newFileName);
+            map.put("vCover", coverUrl);
+        }
+
         //拼接成可访问路径返回页面，URL
         String filename = uid + "/" + dir + "/" + newFileName;
-        Map<String, Object> map = new HashMap<>();
         map.put("url", staticPath + filename);
         map.put("size", multipartFile.getSize());
         map.put("imgSuffix", imgSuffix);
@@ -78,7 +92,52 @@ public class UploadFile
         return map;
     }
 
-
+    /**
+     * 获取视频封面
+     * 私有
+     */
+    private String getPicFromVideo ( File file, String videoFileName ) throws Exception
+    {
+        FFmpegFrameGrabber ff = new FFmpegFrameGrabber(file);
+        ff.start();
+        int length = ff.getLengthInFrames();
+        UserDTO userDTO = UserHolder.getUser();
+        String dir = "vCover";
+        String videoName = videoFileName.substring(0, videoFileName.lastIndexOf(".mp4"));
+        String imgSuffix = ".jpg";
+        String coverName = videoName + "-cover" + imgSuffix;
+        Frame frame = null;
+        for ( int i = 0; i < length; i++ )
+        {
+            frame = ff.grabFrame();
+            if ( i > 5 && frame.image != null )
+            {
+                break;
+            }
+        }
+        if ( coverName.indexOf('.') != - 1 )
+        {
+            String[] arr = coverName.split("\\.");
+            if ( arr.length >= 2 )
+            {
+                imgSuffix = arr[1];
+            }
+        }
+        //磁盘目录，指定文件上传目录
+        //生成目录:E:/resource/用户id/文件用途（头像、文章图片）
+        File targetPath = new File(uploadFolder + userDTO.getUid(), dir);
+        //目录不存在就创建
+        if ( ! targetPath.exists() )
+        {
+            boolean mkdirs = targetPath.mkdirs();
+        }
+        File targetFileName = new File(targetPath, coverName);
+        Java2DFrameConverter converter = new Java2DFrameConverter();
+        BufferedImage bi = converter.getBufferedImage(frame);
+        ImageIO.write(bi, imgSuffix, targetFileName);
+        ff.stop();
+        return staticPath + userDTO.getUid() + "/" + dir + "/" + targetFileName.getName();
+    }
 }
 
 

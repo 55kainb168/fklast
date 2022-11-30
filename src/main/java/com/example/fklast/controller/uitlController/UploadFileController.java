@@ -3,13 +3,12 @@ package com.example.fklast.controller.uitlController;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.fklast.dto.UserDTO;
 import com.example.fklast.utils.Result;
-import com.example.fklast.utils.component.UploadFile;
 import com.example.fklast.utils.UserHolder;
+import com.example.fklast.utils.component.UploadFile;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author 卢本伟牛逼
@@ -26,7 +25,7 @@ public class UploadFileController
      * dir指明图片用途（头像，文章图片等）
      */
     @PostMapping ("/file")
-    public Result uploadFile ( @RequestBody (required = false) MultipartFile multipartFile, @RequestParam String dir ) throws IOException
+    public Result uploadFile ( @RequestBody (required = false) MultipartFile multipartFile, @RequestParam String dir ) throws Exception
     {
         UserDTO userDTO = UserHolder.getUser();
         if ( ObjectUtil.isEmpty(multipartFile) )
