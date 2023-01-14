@@ -64,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
 //        释放静态资源,指定资源拦截规则,指定自定义认证界面,指定退出认证配置,csrf配置
         http.authorizeRequests()
-                .antMatchers("/user/register","/mail").permitAll()
+                .antMatchers("/user/register", "/mail", "/video/page/**", "/video/findOne").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

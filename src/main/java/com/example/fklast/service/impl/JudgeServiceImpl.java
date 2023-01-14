@@ -6,11 +6,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.fklast.domain.Gap;
+import com.example.fklast.domain.Judge;
 import com.example.fklast.dto.UserDTO;
-import com.example.fklast.mapper.GapMapper;
+import com.example.fklast.mapper.JudgeMapper;
 import com.example.fklast.mapper.VideoMapper;
-import com.example.fklast.service.GapService;
+import com.example.fklast.service.JudgeService;
 import com.example.fklast.utils.Result;
 import com.example.fklast.utils.UserHolder;
 import org.springframework.stereotype.Service;
@@ -22,71 +22,68 @@ import java.util.Map;
 
 /**
  * @author 卢本伟牛逼
- * @description 针对表【fk_gap】的数据库操作Service实现
- * @createDate 2023-01-12 16:35:16
+ * @description 针对表【fk_judge】的数据库操作Service实现
+ * @createDate 2023-01-12 21:32:57
  */
 @Service
-public class GapServiceImpl extends ServiceImpl<GapMapper, Gap> implements GapService
+public class JudgeServiceImpl extends ServiceImpl<JudgeMapper, Judge> implements JudgeService
 {
-
     @Resource
-    private GapMapper gapMapper;
-
+    private JudgeMapper judgeMapper;
     @Resource
     private VideoMapper videoMapper;
 
 
     @Override
-    public Result insertGap ( Gap gap )
+    public Result insertJudge ( Judge judge )
     {
-        if ( ObjectUtil.isEmpty(videoMapper.selectById(gap.getVid())) )
+        if ( ObjectUtil.isEmpty(videoMapper.selectById(judge.getVid())) )
         {
             return new Result(true, "视频不存在");
         }
-        gap.setGid(UUID.randomUUID().toString(true));
+        judge.setJid(UUID.randomUUID().toString(true));
         UserDTO userDTO = UserHolder.getUser();
-        gap.setUid(userDTO.getUid());
-        gap.setCreateTime(LocalDateTime.now());
-        gap.setUpdateTime(LocalDateTime.now());
-        gap.setGapDelete("1");
-        return new Result(gapMapper.insert(gap) > 0);
+        judge.setUid(judge.getUid());
+        judge.setJudgeDelete("1");
+        judge.setCreateTime(LocalDateTime.now());
+        judge.setUpdateTime(LocalDateTime.now());
+        return new Result(judgeMapper.insert(judge) > 0);
     }
 
     @Override
-    public Boolean deleteGap ( String gid )
+    public Boolean deleteJudge ( String jid )
     {
-        return gapMapper.deleteById(gid) > 0;
+        return judgeMapper.deleteById(jid) > 0;
     }
-
 
     /**
      * 更改题目内容
      */
     @Override
-    public Boolean updateGap ( Gap gap )
+    public Boolean updateJudge ( Judge judge )
     {
-        gap.setUpdateTime(LocalDateTime.now());
-        return gapMapper.updateById(gap) > 0;
+        judge.setUpdateTime(LocalDateTime.now());
+        return judgeMapper.updateById(judge) > 0;
     }
 
     @Override
-    public Result findGapByPage ( int currentPage, int pageSize, String uid, String keyWord, String sort )
+    public Result findJudgeByPage ( int currentPage, int pageSize, String uid, String keyWord, String sort )
     {
-        LambdaQueryWrapper<Gap> lqw = new LambdaQueryWrapper<>();
-        IPage<Gap> page = new Page<>(currentPage, pageSize);
-        lqw.eq(Gap::getGapDelete, "1");
-        gapMapper.selectPage(page, lqw);
+        LambdaQueryWrapper<Judge> lqw = new LambdaQueryWrapper<>();
+        IPage<Judge> page = new Page<>(currentPage, pageSize);
+        lqw.eq(Judge::getJudgeDelete, "1");
+        judgeMapper.selectPage(page, lqw);
         //如果当前页码大于总页码，那么重新执行查询操作，使用最大页码值作为当前页码值
         if ( currentPage > page.getPages() )
         {
             page.setCurrent(page.getPages());
-            gapMapper.selectPage(page, lqw);
+            judgeMapper.selectPage(page, lqw);
         }
         Map<String, Object> map = new HashMap<>();
         map.put("currentPage", currentPage);
         map.put("totalPage", page.getPages());
         map.put("total", page.getTotal());
-        map.put("Gaps", page.getRecords());
+        map.put("Judges", page.getRecords());
         return new Result(true, map);
     }
 }

@@ -20,17 +20,26 @@ public class OptionController
     @PostMapping ("/insert")
     public Result insertOption ( @RequestBody Option option )
     {
-        return new Result(optionService.insertOption(option));
+        return optionService.insertOption(option);
     }
 
 
     /**
      * 逻辑删除选择题
      */
-    @DeleteMapping ("/delete")
-    public Result deleteOption ( @RequestParam String oid )
+    @DeleteMapping ("/delete/{oid}")
+    public Result deleteOption ( @PathVariable String oid )
     {
         return new Result(optionService.deleteOption(oid));
+    }
+
+    /**
+     * 更改题目内容
+     */
+    @PutMapping ("/update")
+    public Result updateOption ( @RequestBody Option option )
+    {
+        return new Result(optionService.updateOption(option));
     }
 
 
@@ -38,7 +47,7 @@ public class OptionController
      * 分页展示选择题
      */
     @GetMapping (value = { "/page/{currentPage}/{pageSize}/{uid}", "/page/{currentPage}/{pageSize}" })
-    public Result getArticleByUserID ( @PathVariable ("currentPage") int currentPage, @PathVariable ("pageSize") int pageSize, @PathVariable (value = "uid", required = false) String uid, @RequestParam (required = false) String keyWord, @RequestParam (required = false) String sort )
+    public Result getOptionByPage ( @PathVariable ("currentPage") int currentPage, @PathVariable ("pageSize") int pageSize, @PathVariable (value = "uid", required = false) String uid, @RequestParam (required = false) String keyWord, @RequestParam (required = false) String sort )
     {
         return optionService.findOptionByPage(currentPage, pageSize, uid, keyWord, sort);
     }

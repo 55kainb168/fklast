@@ -22,6 +22,13 @@ public interface GapService extends IService<Gap>
      */
     Boolean deleteGap ( String gid );
 
+
+    /**
+     * 更改题目内容
+     */
+    Boolean updateGap ( Gap gap );
+
+
     /**
      * 分页展示大题
      */

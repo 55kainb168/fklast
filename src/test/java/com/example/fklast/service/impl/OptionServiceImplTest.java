@@ -26,8 +26,7 @@ class OptionServiceImplTest
         option.setOptionFour("4");
         option.setOptionAnswer("A");
         option.setOptionAnalysis("asdasd");
-        Boolean aBoolean = optionService.insertOption(option);
-        System.out.println(aBoolean);
+
 
     }
 

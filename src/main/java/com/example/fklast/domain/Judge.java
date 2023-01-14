@@ -4,56 +4,60 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * {@code @TableName} fk_gap
+ * @TableName fk_judge
  */
-@TableName (value = "fk_gap")
+@TableName (value = "fk_judge")
 @Data
-public class Gap implements Serializable
+@AllArgsConstructor
+@NoArgsConstructor
+public class Judge implements Serializable
 {
     @Serial
     @TableField (exist = false)
     private static final long serialVersionUID = 1L;
     /**
-     * 主观题id
+     * 判断题id
      */
     @TableId
-    private String gid;
+    private String jid;
     /**
      * 上传人id
      */
     private String uid;
     /**
-     * 跟随的视频id
+     * 视频id
      */
     private String vid;
     /**
      * 题目内容
      */
-    @TableField (value = "gap_content")
-    private String gapContent;
-    /**
-     * 主观题标签
-     */
-    @TableField (value = "gap_label")
-    private String gapLabel;
+    @TableField (value = "judge_content")
+    private String judgeContent;
     /**
      * 答案
      */
-    @TableField (value = "gap_answer")
-    private String gapAnswer;
+    @TableField (value = "judge_answer")
+    private String judgeAnswer;
+    /**
+     * 标签
+     */
+    @TableField (value = "judge_label")
+    private String judgeLabel;
     /**
      * 是否删除 （1正常，0删除）
      */
-    @TableField (value = "gap_delete")
+    @TableField (value = "judge_delete")
     @TableLogic (value = "1", delval = "0")
-    private String gapDelete;
+    private String judgeDelete;
     /**
      * 创建时间
      */
@@ -64,5 +68,6 @@ public class Gap implements Serializable
      */
     @TableField (value = "update_time")
     private LocalDateTime updateTime;
+
 
 }
