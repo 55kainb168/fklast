@@ -13,6 +13,7 @@ import com.example.fklast.mapper.VideoMapper;
 import com.example.fklast.service.JudgeService;
 import com.example.fklast.utils.Result;
 import com.example.fklast.utils.UserHolder;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -72,6 +73,10 @@ public class JudgeServiceImpl extends ServiceImpl<JudgeMapper, Judge> implements
         LambdaQueryWrapper<Judge> lqw = new LambdaQueryWrapper<>();
         IPage<Judge> page = new Page<>(currentPage, pageSize);
         lqw.eq(Judge::getJudgeDelete, "1");
+        if ( Strings.isNotBlank(uid) )
+        {
+            lqw.eq(Judge::getUid, uid);
+        }
         judgeMapper.selectPage(page, lqw);
         //如果当前页码大于总页码，那么重新执行查询操作，使用最大页码值作为当前页码值
         if ( currentPage > page.getPages() )

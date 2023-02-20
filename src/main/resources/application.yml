@@ -14,7 +14,7 @@ spring:
     active: dev
   mail:
     username: 215368433@qq.com
-    password: ygfkeuigszrbbgff
+    password: pcaekwvaisxvcbcg
     default-encoding: UTF-8
     host: smtp.qq.com
   servlet:

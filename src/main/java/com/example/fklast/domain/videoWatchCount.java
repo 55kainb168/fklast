@@ -20,7 +20,7 @@ public class videoWatchCount implements Serializable
     /**
      * 用户id
      */
-    private String uid;
+    private String vUid;
     /**
      * 观看数
      */

@@ -58,9 +58,9 @@ public class VideoController
      * 审核员审核视频
      */
     @PutMapping ("/check/{vid}")
-    public Result checkVideo ( @PathVariable String vid )
+    public Result checkVideo ( @PathVariable String vid, @RequestParam String state )
     {
-        return new Result(videoService.checkVideo(vid));
+        return new Result(videoService.checkVideo(vid, state));
     }
 
 
@@ -71,6 +71,26 @@ public class VideoController
     public Result findUserVideoWatch ( @PathVariable String vid )
     {
         return videoService.findUserVideoWatch(vid);
+    }
+
+
+    /**
+     * 播放量增加
+     */
+    @GetMapping ("/videoCountUp/{vid}")
+    public Result videoWatchCountUp ( @PathVariable String vid )
+    {
+        return new Result(videoService.videoWatchCountUp(vid));
+    }
+
+
+    /**
+     * 封禁视频
+     */
+    @PutMapping ("/ban")
+    public Boolean banVideo ( String vid )
+    {
+        return videoService.banVideo(vid);
     }
 
 

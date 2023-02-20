@@ -48,11 +48,37 @@ public class UserController
         return new Result(userService.userRegister(user));
     }
 
-
-    @PostMapping("/login")
-    public Result userLogin( @RequestBody User user )
+    /**
+     * 更新个人信息
+     */
+    @PutMapping ("/update")
+    public Result userUpdate ( @RequestBody User user )
     {
-        return userService.userLogin(user.getEmail(),user.getPassword());
+        return new Result(userService.userInPersonalUpdate(user));
+    }
+
+    /**
+     * 忘记密码
+     */
+    @PutMapping ("/forget")
+    public Result forgetPassword ( @RequestParam String email, @RequestParam String password )
+    {
+        return userService.forgetPassword(email, password);
+    }
+
+    /**
+     * 查询某个用户信息
+     */
+    @GetMapping ("/findOne/{uid}")
+    public Result findOne ( @PathVariable String uid )
+    {
+        return userService.getUserInfo(uid);
+    }
+
+    @PostMapping ("/login")
+    public Result userLogin ( @RequestParam String email, @RequestParam String password )
+    {
+        return userService.userLogin(email, password);
     }
 
 }

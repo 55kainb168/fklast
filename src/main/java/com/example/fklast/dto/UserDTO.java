@@ -1,10 +1,12 @@
 package com.example.fklast.dto;
 
+import com.example.fklast.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author 卢本伟牛逼
@@ -42,6 +44,10 @@ public class UserDTO implements Serializable
      * 学院
      */
     private String uDepartment;
+    /**
+     * 角色
+     */
+    private List<Role> roles;
     /**
      * 状态（1正常，0封禁）
      */

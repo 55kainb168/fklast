@@ -26,6 +26,7 @@ public class SmsCodeServiceImpl implements SmsCodeService
     public String sendCodeToSms ( String mail )
     {
         //用hutool工具包
+
         return RandomUtil.randomNumbers(6);
     }
 

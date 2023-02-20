@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -55,12 +56,44 @@ public class VideoDTO implements Serializable
      * 上传人用户名
      */
     private String vUsername;
+
     /**
-     * 观看数
+     * 上传时间
      */
-    private Integer videoCount;
+    private LocalDateTime creatTime;
+
     /**
      * 审核状态  0,：上传成功（待提交审核）,1：审核不通过，2：审核通过，3：发布，4：下架，5：删除
      */
     private String vState;
+
+    /**
+     * 是否删除 0：正常 1：删除
+     */
+    private String vDelete;
+
+    /**
+     * 审核人id
+     */
+    private String auditUid;
+
+    /**
+     * 审核人用户名
+     */
+    private String auditUsername;
+
+    /**
+     * 视频审核时间
+     */
+    private LocalDateTime auditTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+    /**
+     * 观看数
+     */
+    private Integer videoCount;
 }

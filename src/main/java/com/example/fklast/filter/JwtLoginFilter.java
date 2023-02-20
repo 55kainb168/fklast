@@ -39,8 +39,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
 {
 
     private AuthenticationManager authenticationManager;
-    private RsaKeyConfig rsaKeyConfig;
-    private StringRedisTemplate stringRedisTemplate;
+    private final RsaKeyConfig rsaKeyConfig;
+    private final StringRedisTemplate stringRedisTemplate;
 
     @Override
     public AuthenticationManager getAuthenticationManager ()
@@ -112,6 +112,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
         lqw.eq(User::getUsername,user.getUsername());
         User selectOne = userService.getOne(lqw);
         UserDTO userDTO = BeanUtil.copyProperties(selectOne, UserDTO.class);
+        userDTO.setRoles((List<Role>) authResult.getAuthorities());
         UserHolder.saveUser(userDTO);
         Map<String, Object> userMap = BeanUtil.beanToMap(userDTO, new HashMap<>(16),
                 CopyOptions.create()
@@ -119,25 +120,18 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
                         .setFieldValueEditor(( fieldName, fieldValue ) -> String.valueOf(fieldValue)));
         //存入redis并设置token有效期,登录后还需要更新token
         String tokenKey = RedisConstants.LOGIN_USER_KEY + token;
-        response.addHeader("authorization","Bearer " + token);
-        //暂定
-        if ( Boolean.TRUE.equals(stringRedisTemplate.hasKey(tokenKey)) )
-        {
-            stringRedisTemplate.expire(tokenKey,RedisConstants.LOGIN_USER_TTL, TimeUnit.MINUTES);
-        }
-        else
-        {
-            stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
-            stringRedisTemplate.expire(tokenKey, RedisConstants.LOGIN_USER_TTL, TimeUnit.MINUTES);
-        }
+        response.addHeader("authorization", "Bearer " + token);
+        stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
+        stringRedisTemplate.expire(tokenKey, RedisConstants.LOGIN_USER_TTL, TimeUnit.MINUTES);
         try
         {
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter writer = response.getWriter();
             Map<Object, Object> resultMap = new HashMap<>(16);
-            resultMap.put("code",HttpServletResponse.SC_OK);
-            resultMap.put("msg","认证通过");
+            resultMap.put("code", HttpServletResponse.SC_OK);
+            resultMap.put("user", userDTO);
+            resultMap.put("msg", "认证通过");
             writer.write(new ObjectMapper().writeValueAsString(resultMap));
             writer.flush();
             writer.close();

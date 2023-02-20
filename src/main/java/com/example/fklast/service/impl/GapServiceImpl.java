@@ -13,6 +13,7 @@ import com.example.fklast.mapper.VideoMapper;
 import com.example.fklast.service.GapService;
 import com.example.fklast.utils.Result;
 import com.example.fklast.utils.UserHolder;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -75,6 +76,10 @@ public class GapServiceImpl extends ServiceImpl<GapMapper, Gap> implements GapSe
         LambdaQueryWrapper<Gap> lqw = new LambdaQueryWrapper<>();
         IPage<Gap> page = new Page<>(currentPage, pageSize);
         lqw.eq(Gap::getGapDelete, "1");
+        if ( Strings.isNotBlank(uid) )
+        {
+            lqw.eq(Gap::getUid, uid);
+        }
         gapMapper.selectPage(page, lqw);
         //如果当前页码大于总页码，那么重新执行查询操作，使用最大页码值作为当前页码值
         if ( currentPage > page.getPages() )
