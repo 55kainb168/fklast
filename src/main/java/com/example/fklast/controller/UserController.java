@@ -81,4 +81,10 @@ public class UserController
         return userService.userLogin(email, password);
     }
 
+    @PostMapping ("/admin/test")
+    public Result adminTest ()
+    {
+        return new Result(true, "通过");
+    }
+
 }

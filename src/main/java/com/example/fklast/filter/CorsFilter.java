@@ -2,6 +2,7 @@ package com.example.fklast.filter;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -35,6 +36,7 @@ public class CorsFilter implements Filter
         if ( OPTIONS.equals(( (HttpServletRequest) request ).getMethod()) )
         {
             response.getWriter().println("ok");
+            ( (HttpServletResponse) response ).setStatus(HttpStatus.NO_CONTENT.value());
         }
         chain.doFilter(request, response);
     }

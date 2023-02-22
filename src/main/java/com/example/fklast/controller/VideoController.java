@@ -57,7 +57,7 @@ public class VideoController
     /**
      * 审核员审核视频
      */
-    @PutMapping ("/check/{vid}")
+    @PostMapping ("/check/{vid}")
     public Result checkVideo ( @PathVariable String vid, @RequestParam String state )
     {
         return new Result(videoService.checkVideo(vid, state));

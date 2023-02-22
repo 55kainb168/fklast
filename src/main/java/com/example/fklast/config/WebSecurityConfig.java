@@ -2,6 +2,7 @@ package com.example.fklast.config;
 
 import com.example.fklast.filter.JwtLoginFilter;
 import com.example.fklast.filter.VerifyFilter;
+import com.example.fklast.mapper.RoleMapper;
 import com.example.fklast.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.annotation.Resource;
 
@@ -36,6 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Resource
     private RsaKeyConfig rsa;
 
+    @Resource
+    private RoleMapper roleMapper;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder ()
     {
@@ -57,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     public void configure ( WebSecurity web )
     {
         web.ignoring().antMatchers("/user/register", "/mail", "/video/page/**", "/video/findOne/**"
-                , "/video/videoCountUp/**");
+                , "/video/videoCountUp/**", "/uploadImages/**");
     }
 
     @Override
@@ -67,13 +72,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         http.authorizeRequests()
                 .antMatchers("/user/register", "/mail/**", "/video/page/**", "/video/findOne/**",
                         "/uploadImages/**", "/video/videoCountUp/**").permitAll()
+                .antMatchers("/video/check/**", "/user/admin/test").hasAnyRole("ADMIN")
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                 .usernameParameter("email")
                 .and()
-                .addFilter(new JwtLoginFilter(super.authenticationManager(),rsa,stringRedisTemplate, userService))
+                .addFilter(new JwtLoginFilter(super.authenticationManager(), rsa, stringRedisTemplate, roleMapper, userService))
                 .addFilter(new VerifyFilter(super.authenticationManager(), rsa,stringRedisTemplate))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

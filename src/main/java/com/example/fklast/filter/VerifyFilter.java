@@ -11,6 +11,7 @@ import com.example.fklast.utils.RedisConstants;
 import com.example.fklast.utils.UserHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.fklast.filter.CorsFilter.OPTIONS;
 import static com.example.fklast.utils.RedisConstants.LOGIN_USER_TTL;
 
 /**
@@ -55,7 +57,13 @@ public class VerifyFilter extends BasicAuthenticationFilter
     public void doFilterInternal ( HttpServletRequest request, HttpServletResponse response, FilterChain chain ) throws IOException, ServletException
     {
         String header = request.getHeader("authorization");
-        if ( header == null || !header.startsWith("Bearer ") )
+        if ( OPTIONS.equals(request.getMethod()) )
+        {
+            response.getWriter().println("ok");
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            chain.doFilter(request, response);
+        }
+        else if ( header == null || ! header.startsWith("Bearer ") )
         {
             //如果是错误token，则给用户提示
             wrongToken(request, response, chain);
@@ -91,17 +99,17 @@ public class VerifyFilter extends BasicAuthenticationFilter
 
     private void wrongToken ( HttpServletRequest request, HttpServletResponse response, FilterChain chain ) throws IOException, ServletException
     {
-        chain.doFilter(request, response);
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         Map<String, Object> resultMap = new HashMap<>(16);
         resultMap.put("code", HttpServletResponse.SC_FORBIDDEN);
-        resultMap.put("msg", "请登录！");
+        resultMap.put("msg", "请重新登录！");
         ServletOutputStream out = response.getOutputStream();
         OutputStreamWriter ow = new OutputStreamWriter(out, StandardCharsets.UTF_8);
         ow.write(new ObjectMapper().writeValueAsString(resultMap));
         ow.flush();
         ow.close();
+        chain.doFilter(request, response);
     }
 }
 

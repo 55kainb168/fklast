@@ -7,6 +7,7 @@ import com.example.fklast.config.RsaKeyConfig;
 import com.example.fklast.domain.Role;
 import com.example.fklast.domain.User;
 import com.example.fklast.dto.UserDTO;
+import com.example.fklast.mapper.RoleMapper;
 import com.example.fklast.service.UserService;
 import com.example.fklast.utils.JwtUtils;
 import com.example.fklast.utils.RedisConstants;
@@ -42,6 +43,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
     private final RsaKeyConfig rsaKeyConfig;
     private final StringRedisTemplate stringRedisTemplate;
 
+    private final RoleMapper roleMapper;
+
     @Override
     public AuthenticationManager getAuthenticationManager ()
     {
@@ -56,11 +59,12 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
 
     private final UserService userService;
 
-    public JwtLoginFilter ( AuthenticationManager authenticationManager, RsaKeyConfig rsaKeyConfig, StringRedisTemplate stringRedisTemplate, UserService userService )
+    public JwtLoginFilter ( AuthenticationManager authenticationManager, RsaKeyConfig rsaKeyConfig, StringRedisTemplate stringRedisTemplate, RoleMapper roleMapper, UserService userService )
     {
         this.authenticationManager = authenticationManager;
         this.rsaKeyConfig = rsaKeyConfig;
         this.stringRedisTemplate = stringRedisTemplate;
+        this.roleMapper = roleMapper;
         this.userService = userService;
     }
 
@@ -109,10 +113,11 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
         String token = JwtUtils.generateTokenExpireInMinutes(user, rsaKeyConfig.getPrivateKey());
         //将token写入redis缓存，需要查询一次数据库
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(User::getUsername,user.getUsername());
+        lqw.eq(User::getUsername, user.getUsername());
         User selectOne = userService.getOne(lqw);
         UserDTO userDTO = BeanUtil.copyProperties(selectOne, UserDTO.class);
-        userDTO.setRoles((List<Role>) authResult.getAuthorities());
+        List<Role> roles = roleMapper.findUserRole(userDTO.getUid());
+        userDTO.setRoles(roles);
         UserHolder.saveUser(userDTO);
         Map<String, Object> userMap = BeanUtil.beanToMap(userDTO, new HashMap<>(16),
                 CopyOptions.create()
