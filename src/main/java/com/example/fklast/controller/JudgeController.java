@@ -37,7 +37,7 @@ public class JudgeController
     /**
      * 更新题目信息
      */
-    @PutMapping ("/update")
+    @PostMapping ("/update")
     public Result updateJudge ( @RequestBody Judge judge )
     {
         return new Result(judgeService.updateJudge(judge));

@@ -27,7 +27,7 @@ class VideoTimeServiceImplTest
         userDTO.setUid("f97d08813b6f4ee5afc01aaa8cbc1cc4");
         userDTO.setUsername("nihao");
         UserHolder.saveUser(userDTO);
-        videoTimeService.viewProgressInsert("43ea7ecd032a44169926717666df0683", 99L);
+        videoTimeService.viewProgressInsert("43ea7ecd032a44169926717666df0683", "5");
     }
 
     @Test
@@ -37,7 +37,7 @@ class VideoTimeServiceImplTest
         userDTO.setUid("f97d08813b6f4ee5afc01aaa8cbc1cc4");
         userDTO.setUsername("nihao");
         UserHolder.saveUser(userDTO);
-        videoTimeService.viewProgressUpdate("43ea7ecd032a44169926717666df0683", 77L);
+        videoTimeService.viewProgressUpdate("43ea7ecd032a44169926717666df0683", "77");
 
     }
 }

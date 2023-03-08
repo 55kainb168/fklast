@@ -105,7 +105,8 @@ public class VerifyFilter extends BasicAuthenticationFilter
         resultMap.put("code", HttpServletResponse.SC_FORBIDDEN);
         resultMap.put("msg", "请重新登录！");
         ServletOutputStream out = response.getOutputStream();
-        OutputStreamWriter ow = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+        OutputStreamWriter ow = new
+                OutputStreamWriter(out, StandardCharsets.UTF_8);
         ow.write(new ObjectMapper().writeValueAsString(resultMap));
         ow.flush();
         ow.close();

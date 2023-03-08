@@ -39,7 +39,7 @@ public class GapController
     /**
      * 更新题目信息
      */
-    @PutMapping ("/update")
+    @PostMapping ("/update")
     public Result updateGap ( @RequestBody Gap gap )
     {
         return new Result(gapService.updateGap(gap));

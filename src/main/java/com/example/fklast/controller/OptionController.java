@@ -36,7 +36,7 @@ public class OptionController
     /**
      * 更改题目内容
      */
-    @PutMapping ("/update")
+    @PostMapping ("/update")
     public Result updateOption ( @RequestBody Option option )
     {
         return new Result(optionService.updateOption(option));

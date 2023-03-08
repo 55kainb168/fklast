@@ -2,4 +2,5 @@
 file:
   staticPath: "http://localhost:8083/uploadImages/"
   patternPath: "/uploadImages/**"
+#  uploadFolder: E:\\resource\\
   uploadFolder: E:/resource/

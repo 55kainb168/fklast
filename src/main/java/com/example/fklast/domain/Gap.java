@@ -30,10 +30,6 @@ public class Gap implements Serializable
      */
     private String uid;
     /**
-     * 跟随的视频id
-     */
-    private String vid;
-    /**
      * 题目内容
      */
     @TableField (value = "gap_content")

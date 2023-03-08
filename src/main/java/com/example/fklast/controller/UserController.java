@@ -87,4 +87,10 @@ public class UserController
         return new Result(true, "通过");
     }
 
+
+    @PostMapping ("/user/test")
+    public Result userTest ()
+    {
+        return new Result(true, "通过");
+    }
 }

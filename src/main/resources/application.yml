@@ -25,6 +25,7 @@ spring:
       max-request-size: 3000MB
       #      文件达到多少时进行磁盘写入
       file-size-threshold: 4000MB
+      enabled: false
   redis:
     host: localhost
     port: 6379

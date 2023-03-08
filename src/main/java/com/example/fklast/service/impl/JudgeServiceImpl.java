@@ -1,7 +1,6 @@
 package com.example.fklast.service.impl;
 
 import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.fklast.domain.Judge;
 import com.example.fklast.dto.UserDTO;
 import com.example.fklast.mapper.JudgeMapper;
-import com.example.fklast.mapper.VideoMapper;
 import com.example.fklast.service.JudgeService;
 import com.example.fklast.utils.Result;
 import com.example.fklast.utils.UserHolder;
@@ -31,24 +29,19 @@ public class JudgeServiceImpl extends ServiceImpl<JudgeMapper, Judge> implements
 {
     @Resource
     private JudgeMapper judgeMapper;
-    @Resource
-    private VideoMapper videoMapper;
 
 
     @Override
     public Result insertJudge ( Judge judge )
     {
-        if ( ObjectUtil.isEmpty(videoMapper.selectById(judge.getVid())) )
-        {
-            return new Result(true, "视频不存在");
-        }
-        judge.setJid(UUID.randomUUID().toString(true));
+        String jid = UUID.randomUUID().toString(true);
+        judge.setJid(jid);
         UserDTO userDTO = UserHolder.getUser();
-        judge.setUid(judge.getUid());
+        judge.setUid(userDTO.getUid());
         judge.setJudgeDelete("1");
         judge.setCreateTime(LocalDateTime.now());
         judge.setUpdateTime(LocalDateTime.now());
-        return new Result(judgeMapper.insert(judge) > 0);
+        return new Result(judgeMapper.insert(judge) > 0, jid, "");
     }
 
     @Override

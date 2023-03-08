@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fklast.mapper.ExamMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.fklast.domain.Exam">
+        <id property="eid" column="eid" jdbcType="VARCHAR"/>
+        <result property="vid" column="vid" jdbcType="VARCHAR"/>
+        <result property="eTitle" column="e_title" jdbcType="VARCHAR"/>
+        <result property="course" column="course" jdbcType="VARCHAR"/>
+        <result property="optionCount" column="option_count" jdbcType="INTEGER"/>
+        <result property="optionIds" column="option_ids" jdbcType="VARCHAR"/>
+        <result property="judgeCount" column="judge_count" jdbcType="INTEGER"/>
+        <result property="judgeIds" column="judge_ids" jdbcType="VARCHAR"/>
+        <result property="gapCount" column="gap_count" jdbcType="INTEGER"/>
+        <result property="gapIds" column="gap_ids" jdbcType="VARCHAR"/>
+        <result property="eState" column="e_state" jdbcType="VARCHAR"/>
+        <result property="eDelete" column="e_delete" jdbcType="VARCHAR"/>
+        <result property="creatTime" column="creat_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        eid
+        ,vid,e_title,
+        course,option_count,option_ids,
+        judge_count,judge_ids,gap_count,
+        gap_ids,e_state,e_delete,
+        creat_time,update_time
+    </sql>
+</mapper>

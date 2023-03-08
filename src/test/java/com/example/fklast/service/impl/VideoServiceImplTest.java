@@ -44,7 +44,7 @@ class VideoServiceImplTest
     @Test
     void findVideoByPage ()
     {
-        Result page = videoService.findVideoByPage(10, 1, null, null, null);
+        Result page = videoService.findVideoByPage(10, 1, null, null, null, true);
         System.out.println(page.getData());
     }
 

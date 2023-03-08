@@ -35,12 +35,16 @@ public class VideoController
 
 
     /**
-     * 分页展示选择题
+     * 分页展示
      */
     @GetMapping (value = { "/page/{currentPage}/{pageSize}/{uid}", "/page/{currentPage}/{pageSize}" })
-    public Result getVideoByPage ( @PathVariable ("currentPage") int currentPage, @PathVariable ("pageSize") int pageSize, @PathVariable (value = "uid", required = false) String uid, @RequestParam (required = false) String keyWord, @RequestParam (required = false) String sort )
+    public Result getVideoByPage ( @PathVariable ("currentPage") int currentPage, @PathVariable ("pageSize") int pageSize,
+                                   @PathVariable (value = "uid", required = false) String uid,
+                                   @RequestParam (required = false) String keyWord,
+                                   @RequestParam (required = false) String sort,
+                                   @RequestParam (required = false) boolean flag )
     {
-        return videoService.findVideoByPage(currentPage, pageSize, uid, keyWord, sort);
+        return videoService.findVideoByPage(currentPage, pageSize, uid, keyWord, sort, flag);
     }
 
 
@@ -60,7 +64,7 @@ public class VideoController
     @PostMapping ("/check/{vid}")
     public Result checkVideo ( @PathVariable String vid, @RequestParam String state )
     {
-        return new Result(videoService.checkVideo(vid, state));
+        return new Result(videoService.checkVideo(vid, state), state, "成功");
     }
 
 

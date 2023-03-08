@@ -33,10 +33,7 @@ public class Judge implements Serializable
      * 上传人id
      */
     private String uid;
-    /**
-     * 视频id
-     */
-    private String vid;
+
     /**
      * 题目内容
      */

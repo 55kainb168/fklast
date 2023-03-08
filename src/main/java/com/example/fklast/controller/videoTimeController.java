@@ -28,7 +28,7 @@ public class videoTimeController
      * 新增历史观看记录
      */
     @PostMapping ("/insert/{vid}")
-    public Result viewProgressInsert ( @PathVariable String vid, @RequestParam Long time )
+    public Result viewProgressInsert ( @PathVariable String vid, @RequestParam String time )
     {
         return new Result(videoTimeService.viewProgressInsert(vid, time));
     }
@@ -37,8 +37,8 @@ public class videoTimeController
     /**
      * 修改历史观看记录
      */
-    @PutMapping ("/update/{vid}")
-    public Result viewProgressUpdate ( @PathVariable String vid, @RequestParam Long time )
+    @PostMapping ("/update/{vid}")
+    public Result viewProgressUpdate ( @PathVariable String vid, @RequestParam String time )
     {
         return new Result(videoTimeService.viewProgressUpdate(vid, time));
     }

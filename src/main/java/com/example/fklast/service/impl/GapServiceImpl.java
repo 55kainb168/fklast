@@ -1,7 +1,6 @@
 package com.example.fklast.service.impl;
 
 import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.fklast.domain.Gap;
 import com.example.fklast.dto.UserDTO;
 import com.example.fklast.mapper.GapMapper;
-import com.example.fklast.mapper.VideoMapper;
 import com.example.fklast.service.GapService;
 import com.example.fklast.utils.Result;
 import com.example.fklast.utils.UserHolder;
@@ -33,24 +31,19 @@ public class GapServiceImpl extends ServiceImpl<GapMapper, Gap> implements GapSe
     @Resource
     private GapMapper gapMapper;
 
-    @Resource
-    private VideoMapper videoMapper;
 
 
     @Override
     public Result insertGap ( Gap gap )
     {
-        if ( ObjectUtil.isEmpty(videoMapper.selectById(gap.getVid())) )
-        {
-            return new Result(true, "视频不存在");
-        }
-        gap.setGid(UUID.randomUUID().toString(true));
+        String gid = UUID.randomUUID().toString(true);
+        gap.setGid(gid);
         UserDTO userDTO = UserHolder.getUser();
         gap.setUid(userDTO.getUid());
         gap.setCreateTime(LocalDateTime.now());
         gap.setUpdateTime(LocalDateTime.now());
         gap.setGapDelete("1");
-        return new Result(gapMapper.insert(gap) > 0);
+        return new Result(gapMapper.insert(gap) > 0, gid, "");
     }
 
     @Override

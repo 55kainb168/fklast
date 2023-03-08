@@ -18,7 +18,6 @@ class GapServiceImplTest
     void insertGap ()
     {
         Gap gap = new Gap();
-        gap.setVid("43ea7ecd032a44169926717666df0683");
         gap.setGapContent("qweqwczx");
         gap.setGapLabel("dqw");
         gap.setGapAnswer("sadasd");
