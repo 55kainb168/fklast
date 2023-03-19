@@ -62,7 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     public void configure ( WebSecurity web )
     {
         web.ignoring().antMatchers("/user/register", "/mail", "/video/page/**", "/video/findOne/**"
-                , "/video/videoCountUp/**", "/uploadImages/**", "/exam/page/**", "/exam/findOne/**");
+                , "/video/videoCountUp/**", "/uploadImages/**", "/exam/page/**", "/exam/findOne/**"
+                , "/course/page/**", "/course/findOne/**");
     }
 
     @Override
@@ -70,8 +71,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
 //        释放静态资源,指定资源拦截规则,指定自定义认证界面,指定退出认证配置,csrf配置
         http.authorizeRequests()
-                .antMatchers("/user/register", "/mail/**", "/video/page/**", "/video/findOne/**",
-                        "/uploadImages/**", "/video/videoCountUp/**", "/exam/page/**", "/exam/findOne/**").permitAll()
+                .antMatchers("/user/register", "/mail/**", "/video/page/**", "/video/findOne/**"
+                        , "/uploadImages/**", "/video/videoCountUp/**", "/exam/page/**", "/exam/findOne/**"
+                        , "/course/page/**", "/course/findOne/**").permitAll()
                 .antMatchers("/video/check", "/user/admin/test", "/exam/check").hasAnyRole("ADMIN")
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest()

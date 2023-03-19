@@ -60,3 +60,7 @@ fromMail:
 logging:
   level:
     root: warn
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true

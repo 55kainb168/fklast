@@ -64,7 +64,28 @@ public class VideoController
     @PostMapping ("/check/{vid}")
     public Result checkVideo ( @PathVariable String vid, @RequestParam String state )
     {
-        return new Result(videoService.checkVideo(vid, state), state, "成功");
+        String status = new String();
+        switch (state)
+        {
+            case "0":
+                status = "待审核";
+                break;
+            case "1":
+                status = "审核不通过";
+                break;
+            case "2":
+                status = "审核通过";
+                break;
+            case "3":
+                status = "发布中";
+                break;
+            case "4":
+                status = "下架";
+                break;
+            default:
+                break;
+        }
+        return new Result(videoService.checkVideo(vid, state), status, "成功");
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.fklast.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -64,7 +65,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam>
         }
         UserDTO userDTO = UserHolder.getUser();
         exam.setEid(UUID.fastUUID().toString(true));
-        if ( Strings.isBlank(exam.getOptionIds()) || Strings.isBlank(exam.getJudgeIds()) || Strings.isBlank(exam.getGapIds()) )
+        if ( Strings.isBlank(exam.getOptionIds()) && Strings.isBlank(exam.getJudgeIds()) && Strings.isBlank(exam.getGapIds()) )
         {
             exam.setOptionCount(0);
             exam.setJudgeCount(0);
@@ -145,6 +146,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam>
         List<String> judgeIds = new ArrayList<>();
         List<String> gapIds = new ArrayList<>();
         StringBuffer id = new StringBuffer();
+        ExamDTO examDTO = BeanUtil.copyProperties(exam, ExamDTO.class);
         if ( Strings.isNotBlank(exam.getOptionIds()) )
         {
             char[] optionIdArray = exam.getOptionIds().toCharArray();
@@ -195,13 +197,22 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam>
                 }
             }
         }
-        List<Option> options = optionMapper.selectBatchIds(optionIds);
-        List<Judge> judges = judgeMapper.selectBatchIds(judgeIds);
-        List<Gap> gaps = gapMapper.selectBatchIds(gapIds);
-        ExamDTO examDTO = BeanUtil.copyProperties(exam, ExamDTO.class);
-        examDTO.setOptions(options);
-        examDTO.setJudges(judges);
-        examDTO.setGaps(gaps);
+
+        if ( CollUtil.isNotEmpty(optionIds) )
+        {
+            List<Option> options = optionMapper.selectBatchIds(optionIds);
+            examDTO.setOptions(options);
+        }
+        if ( CollUtil.isNotEmpty(judgeIds) )
+        {
+            List<Judge> judges = judgeMapper.selectBatchIds(judgeIds);
+            examDTO.setJudges(judges);
+        }
+        if ( CollUtil.isNotEmpty(gapIds) )
+        {
+            List<Gap> gaps = gapMapper.selectBatchIds(gapIds);
+            examDTO.setGaps(gaps);
+        }
         return new Result(true, examDTO);
     }
 

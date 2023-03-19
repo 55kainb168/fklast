@@ -207,7 +207,7 @@ public class UploadFile
                 for ( int i = 0; i < schunks; i++ )
                 {
                     File tempFile = new File(tempPath, i + "-" + name);
-                    while ( ! targetFileName.exists() )
+                    while ( ! tempFile.exists() )
                     {
                         Thread.sleep(100);
                     }
