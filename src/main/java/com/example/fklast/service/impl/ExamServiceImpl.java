@@ -100,13 +100,16 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam>
             lqw.eq(Exam::getEUid, uid);
         }
         //查询条件
-        if ( Strings.isNotBlank(keyWord) )
+        if ( Strings.isNotBlank(keyWord) && ! keyWord.equals("undefined") )
         {
-            lqw.like(Strings.isNotBlank(keyWord), Exam::getETitle, keyWord);
-            lqw.or();
-            lqw.like(Strings.isNotBlank(keyWord), Exam::getCourse, keyWord);
-            lqw.or();
-            lqw.like(Strings.isNotBlank(keyWord), Exam::getVid, keyWord);
+            lqw.and(i -> i.like(Strings.isNotBlank(keyWord), Exam::getETitle, keyWord).or().
+                    like(Strings.isNotBlank(keyWord), Exam::getCourse, keyWord).or()
+                    .like(Strings.isNotBlank(keyWord), Exam::getVid, keyWord));
+//            lqw.like(Strings.isNotBlank(keyWord), Exam::getETitle, keyWord);
+//            lqw.or();
+//            lqw.like(Strings.isNotBlank(keyWord), Exam::getCourse, keyWord);
+//            lqw.or();
+//            lqw.like(Strings.isNotBlank(keyWord), Exam::getVid, keyWord);
         }
         examMapper.selectPage(page, lqw);
         //如果当前页码大于总页码，那么重新执行查询操作，使用最大页码值作为当前页码值
