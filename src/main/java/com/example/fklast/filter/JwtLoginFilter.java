@@ -74,6 +74,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter
         try
         {
             User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            //根据email和password判断
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword());
             return this.getAuthenticationManager().authenticate(authRequest);
         }

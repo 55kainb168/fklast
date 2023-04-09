@@ -155,16 +155,18 @@ public class UploadFile
             }
             for ( FileItem item : items )
             {
+                //判断文件对象
                 if ( ! item.isFormField() )
                 {
-                    String tempFileNmae = name;
+                    String tempFileName = name;
                     if ( Strings.isNotBlank(name) )
                     {
                         if ( schunk != null )
                         {
-                            tempFileNmae = schunk + "-" + name;
+                            tempFileName = schunk + "-" + name;
                         }
-                        File tempFile = new File(tempPath, tempFileNmae);
+                        File tempFile = new File(tempPath, tempFileName);
+                        //断点续传
                         if ( ! tempFile.exists() )
                         {
                             item.write(tempFile);
