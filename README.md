@@ -118,7 +118,7 @@ pagehelper:
 
 在DOS窗口输入 “javac”然后点击回车键，出现图3-2所示的信息表示开发环境变量配置成功。
 
-![javac](./javac-1684044699600-15.png)
+![javac](./img/javac.png)
 
 图3-2 开发环境配置
 
@@ -130,7 +130,7 @@ pagehelper:
 
 
 
-![node](./node.png)
+![node](./img/node.png)
 
 
 
@@ -141,7 +141,7 @@ pagehelper:
 
 
 
-![clip_image002](./clip_image002.jpg)
+![clip_image002](./img/clip_image002.jpg)
 
 图 3‑4 启动MongoDB数据库
 
@@ -169,7 +169,7 @@ app.listen(PORT, () => {
 
 })
 
-![image-20230514134311092](./image-20230514134311092-1684044728271-19.png)
+![image-20230514134311092](./img/image-20230514134311092.png)
 
 图 3-5 启动前端静态资源端口
 
