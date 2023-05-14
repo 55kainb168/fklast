@@ -110,7 +110,7 @@ pagehelper:
 
 在线下载JDK，版本17。在DOS窗口输入”java -version“然后点击回车键，出现图3-1所示的信息表示运行环境部署成功。
 
-![jdk](./jdk.jpg)
+![jdk](./jdk-1684044690019-13.jpg)
 
 图3-1 开发环境部署
 
@@ -118,7 +118,7 @@ pagehelper:
 
 在DOS窗口输入 “javac”然后点击回车键，出现图3-2所示的信息表示开发环境变量配置成功。
 
-![image-20230514134434340](img\javac.png)
+![javac](./javac-1684044699600-15.png)
 
 图3-2 开发环境配置
 
@@ -130,7 +130,7 @@ pagehelper:
 
 
 
-![image-20230514134256363](img\node.png)
+![node](./node.png)
 
 
 
@@ -141,7 +141,7 @@ pagehelper:
 
 
 
-![img](img\clip_image002.jpg)
+![clip_image002](./clip_image002.jpg)
 
 图 3‑4 启动MongoDB数据库
 
@@ -169,7 +169,7 @@ app.listen(PORT, () => {
 
 })
 
-![image-20230514134311092](./image-20230514134311092.png)
+![image-20230514134311092](./image-20230514134311092-1684044728271-19.png)
 
 图 3-5 启动前端静态资源端口
 
