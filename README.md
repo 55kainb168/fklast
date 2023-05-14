@@ -110,7 +110,7 @@ pagehelper:
 
 在线下载JDK，版本17。在DOS窗口输入”java -version“然后点击回车键，出现图3-1所示的信息表示运行环境部署成功。
 
-![jdk](./img/jdk-1684044690019-13.jpg)
+![jdk](./img/jdk.jpg)
 
 图3-1 开发环境部署
 
