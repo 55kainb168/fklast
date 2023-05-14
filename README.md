@@ -102,7 +102,7 @@ pagehelper:
 
 主要功能结构如图2-1所示：
 
-![img](F:\好用的界面\Typora\img\系统模块)
+![系统模块](./img/%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9D%97.jpg)
 
 ### 环境部署
 
@@ -110,9 +110,7 @@ pagehelper:
 
 在线下载JDK，版本17。在DOS窗口输入”java -version“然后点击回车键，出现图3-1所示的信息表示运行环境部署成功。
 
- 
-
-![img](F:\好用的界面\Typora\img\jdk版本)
+![jdk](./jdk.jpg)
 
 图3-1 开发环境部署
 
@@ -120,7 +118,7 @@ pagehelper:
 
 在DOS窗口输入 “javac”然后点击回车键，出现图3-2所示的信息表示开发环境变量配置成功。
 
-![image-20230514134434340](F:\好用的界面\Typora\img\javac.png)
+![image-20230514134434340](img\javac.png)
 
 图3-2 开发环境配置
 
@@ -132,7 +130,7 @@ pagehelper:
 
 
 
-![image-20230514134256363](F:\好用的界面\Typora\img\node.png)
+![image-20230514134256363](img\node.png)
 
 
 
@@ -143,7 +141,7 @@ pagehelper:
 
 
 
-![img](F:\好用的界面\Typora\img\clip_image002.jpg)
+![img](img\clip_image002.jpg)
 
 图 3‑4 启动MongoDB数据库
 
@@ -171,7 +169,7 @@ app.listen(PORT, () => {
 
 })
 
-![image-20230514134311092](F:\好用的界面\Typora\img\image-20230514134311092.png)
+![image-20230514134311092](./image-20230514134311092.png)
 
 图 3-5 启动前端静态资源端口
 
